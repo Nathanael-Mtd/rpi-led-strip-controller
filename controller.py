@@ -145,9 +145,9 @@ class Controller:
             (255, 255, 255),
         ])
 
-    def smooth(self):
+    def strobe(self):
         self.presets([ (255, 0, 0), (0, 255, 0), (0, 0, 255) ])
 
-    def strobe(self):
+    def smooth(self):
         self.presets([ [x,x,x] for x in range(1, 256, 2) + range(254, 0, -2) ])
 
