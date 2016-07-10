@@ -14,7 +14,7 @@ COLORS = {
     "white": "FFFFFF",
     "low_white": "646464",
     "red": "FF0000",
-    "low_red": "CB0000",
+    "low_red": "7a0000",
     "green": "00FF00",
     "low_green": "008000",
     "blue": "0000FF",
