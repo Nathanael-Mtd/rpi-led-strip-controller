@@ -10,19 +10,27 @@ import threading
 import pigpio
 
 COLORS = {
-    "red"     : "FF0000",
-    "green"   : "00FF00",
-    "blue"    : "0000FF",
-    "white"   : "FFFFFF",
-    "purple"  : "A020F0",
-    "black"   : "000000",
+    "black": "000000",
+    "white": "FFFFFF",
+    "low_white": "646464",
+    "red": "FF0000",
+    "low_red": "CB0000",
+    "green": "00FF00",
+    "low_green": "008000",
+    "blue": "0000FF",
+    "low_blue": "000042",
+    "purple": "A020F0",
+    "low_purple": "680AA4",
+    "orange": "FF4600",
+    "yellow": "FFC400"
 }
+
 
 def is_rgb(rgb):
     return re.match("[a-fA-F0-9]{6}", rgb) is not None
 
-class Controller:
 
+class Controller:
     def __init__(self, pins):
 
         assert len(pins) == 3
@@ -32,7 +40,7 @@ class Controller:
         self.MAX_SPEED = 20
 
         self.interval = 1
-        self.speed    = 1
+        self.speed = 1
         self.set_speed(self.MIN_SPEED)
 
         self.gpio = None
@@ -43,17 +51,17 @@ class Controller:
         self.thread = None
 
         self.programs = {
-            "off"    : self.off,
-            "fade"   : self.fade,
-            "flash"  : self.flash,
-            "strobe" : self.strobe,
-            "smooth" : self.smooth
+            "off": self.off,
+            "fade": self.fade,
+            "flash": self.flash,
+            "strobe": self.strobe,
+            "smooth": self.smooth
         }
 
     def __del__(self):
         if self.gpio is not None:
             self.gpio.close()
-            
+
     def clear(self):
         if (self.thread is not None) and self.thread.is_alive():
             self.stop_event.set()
@@ -73,8 +81,8 @@ class Controller:
             speed = self.MIN_SPEED
         elif speed > self.MAX_SPEED:
             speed = self.MAX_SPEED
-            
-        self.speed    = speed
+
+        self.speed = speed
         self.interval = 2.0 / speed
 
     def program(self, name):
@@ -121,14 +129,14 @@ class Controller:
 
     def fade(self):
 
-        phase = [0, math.pi * 2/3, math.pi*4/3]
+        phase = [0, math.pi * 2 / 3, math.pi * 4 / 3]
         width = 127
         center = 128
         length = 50
-        
+
         i = 0
         while True:
-            self.color([ math.sin(0.05 * i + phase[x]) * width + center for x in range(len(phase)) ])
+            self.color([math.sin(0.05 * i + phase[x]) * width + center for x in range(len(phase))])
             i += 1
             self.stop_event.wait(timeout=self.interval / 5)
             if self.stop_event.is_set():
@@ -136,18 +144,17 @@ class Controller:
 
     def flash(self):
         self.presets([
-            (255,   0,   0),
-            (  0, 255,   0),
-            (  0,   0, 255),
-            (255, 255,   0),
-            (255,   0, 255),
-            (  0, 255, 255),
+            (255, 0, 0),
+            (0, 255, 0),
+            (0, 0, 255),
+            (255, 255, 0),
+            (255, 0, 255),
+            (0, 255, 255),
             (255, 255, 255),
         ])
 
     def strobe(self):
-        self.presets([ (255, 0, 0), (0, 255, 0), (0, 0, 255) ])
+        self.presets([(255, 0, 0), (0, 255, 0), (0, 0, 255)])
 
     def smooth(self):
-        self.presets([ [x,x,x] for x in range(1, 256, 2) + range(254, 0, -2) ])
-
+        self.presets([[x, x, x] for x in range(1, 256, 2) + range(254, 0, -2)])
