@@ -21,8 +21,10 @@ COLORS = {
     "low_blue": "000042",
     "purple": "A020F0",
     "low_purple": "680AA4",
-    "orange": "FF4600",
-    "yellow": "FFC400"
+    "orange": "FF4500",
+    "low_orange": "661B00",
+    "yellow": "FFC400",
+    "blurple": "5620F0"
 }
 
 
@@ -142,7 +144,7 @@ class Controller:
             if self.stop_event.is_set():
                 return
 
-    def flash(self):
+    def strobe(self):
         self.presets([
             (255, 0, 0),
             (0, 255, 0),
@@ -153,7 +155,7 @@ class Controller:
             (255, 255, 255),
         ])
 
-    def strobe(self):
+    def flash(self):
         self.presets([(255, 0, 0), (0, 255, 0), (0, 0, 255)])
 
     def smooth(self):

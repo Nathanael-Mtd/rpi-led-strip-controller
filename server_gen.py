@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 import controller as C
 
-control = C.Controller([ 17, 27, 22 ])
+control = C.Controller([ 25, 23, 24 ])
 
 @app.route("/speed/<int:t>")
 def speed(t):
@@ -31,4 +31,4 @@ def arguments():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
